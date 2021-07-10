@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Copyright (C) 2021 Andrés B.S.
 # SPDX-License-Identifier: MIT
 
@@ -95,7 +97,7 @@ def canal_ruidoso(senal_Tx, Pm, SNR):
 
 def modulador(bits, fc, mpp):
     '''Un método que simula el esquema de
-    modulación digital BPSK.
+    modulación digital 16-QAM.
 
     :param bits: Vector unidimensional de bits
     :param fc: Frecuencia de la portadora en Hz
@@ -135,7 +137,7 @@ def modulador(bits, fc, mpp):
 
 def demodulador(senal_Rx, portadora, mpp):
     '''Un método que simula un bloque demodulador
-    de señales, bajo un esquema BPSK. El criterio
+    de señales, bajo un esquema 16-QAM. El criterio
     de demodulación se basa en decodificación por
     detección de energía.
 
@@ -175,6 +177,7 @@ def demodulador(senal_Rx, portadora, mpp):
     return bits_Rx.astype(int), senal_demodulada
 
 
+# MAIN
 # Parámetros
 fc = 5000  # frecuencia de la portadora
 mpp = 20   # muestras por periodo de la portadora
@@ -241,7 +244,7 @@ ax3.set_ylabel('$s(t) + n(t)$')
 
 # La señal demodulada
 ax4.plot(senal_demodulada[0:600], color='m', lw=2)
-ax4.set_ylabel('$b^{\prime}(t)$')
+ax4.set_ylabel('$b^{\'}(t)$')
 ax4.set_xlabel('$t$ / milisegundos')
 fig.tight_layout()
 plt.show()
