@@ -104,8 +104,8 @@ def modulador(bits, fc, mpp):
     :param mpp: Cantidad de muestras por periodo de onda portadora
     :return: Un vector con la señal modulada
     :return: Un valor con la potencia promedio [W]
-    :return: La onda portadora c(t)
-    :return: La onda cuadrada moduladora (información)
+    :return: La onda portadora coseno c1(t)
+    :return: La onda portadora seno c2(t)
     '''
     # 1. Parámetros de la 'señal' de información (bits)
     N = len(bits)  # Cantidad de bits
@@ -119,30 +119,32 @@ def modulador(bits, fc, mpp):
     # 3. Inicializar la señal modulada s(t)
     t_simulacion = np.linspace(0, N*Tc, N*mpp)
     senal_Tx = np.zeros(t_simulacion.shape)
-    # moduladora = np.zeros(t_simulacion.shape)  # (opcional) señal de bits
 
     # 4. Asignar las formas de onda según los bits (16-QAM)
-
-    for i in range(0, len(bits), 4):
-        # Se crea la señal según los valores del 16-QAM
-        b1 = bits[i]
-        b2 = bits[i+1]
-        b3 = bits[i+2]
-        b4 = bits[i+3]
-        senal_Tx[i*mpp: (i+1)*mpp] = (-1)**(1+b1) * 3**(1-b2) * portadora1\
-            + (-1)**(b3) * 3**(1-b4) * portadora2
+    # Obsérvese: la pérdida de información si len(bits)%4!=0
+    for i in range(0, N, 4):
+        ''' Se crea la señal según los valores del 16-QAM
+        b1 = bits[i]; b2 = bits[i+1];
+        b3 = bits[i+2]; b4 = bits[i+3]
+        senal_Tx[i*mpp: (i+1)*mpp] = (-1)**(1+b1) * 3**(1-b2) * portadora1 \
+            + (-1)**(b3) * 3**(1-n4) * portadora2
+        Con la tabla proporcionada se puede atestar que estos valores
+        coinciden con los del 16-QAM
+        '''
+        senal_Tx[i*mpp: (i+1)*mpp] = \
+            (-1)**(1+bits[i]) * 3**(1-bits[i+1]) * portadora1 \
+            + (-1)**(bits[i+2]) * 3**(1-bits[i+3]) * portadora2
+        # Ésta fórmula me la inventé para compactar el código
 
     # 5. Calcular la potencia promedio de la señal modulada
-    P_senal_Tx = (1 / (N*Tc)) * np.trapz(pow(senal_Tx, 2), t_simulacion)
+    P_senal_Tx = 1 / (N*Tc) * np.trapz(pow(senal_Tx, 2), t_simulacion)
 
     return senal_Tx, P_senal_Tx, portadora1, portadora2
 
 
 def demodulador(senal_Rx, portadora1, portadora2, mpp):
     '''Un método que simula un bloque demodulador
-    de señales, bajo un esquema 16-QAM. El criterio
-    de demodulación se basa en decodificación por
-    detección de energía.
+    de señales, bajo un esquema 16-QAM.
 
     :param senal_Rx: La señal recibida del canal
     :param portadora: La onda portadora c(t)
@@ -150,7 +152,6 @@ def demodulador(senal_Rx, portadora1, portadora2, mpp):
     :return: Los bits de la señal demodulada
     '''
 
-    portadora = portadora1 + portadora2
     # Cantidad de muestras en senal_Rx
     M = len(senal_Rx)
 
@@ -169,7 +170,9 @@ def demodulador(senal_Rx, portadora1, portadora2, mpp):
     # Demodulación
     for i in range(N):
         # Producto interno de dos funciones
-        producto = senal_Rx[i*mpp: (i+1)*mpp] * portadora
+        producto1 = senal_Rx[i*mpp: (i+1)*mpp] * portadora1
+        producto2 = senal_Rx[i*mpp: (i+1)*mpp] * portadora2
+        producto = producto1 + producto2
         Ep = np.sum(producto)
         senal_demodulada[i*mpp: (i+1)*mpp] = producto
 
