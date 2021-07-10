@@ -113,29 +113,32 @@ def modulador(bits, fc, mpp):
     # 2. Construyendo un periodo de la señal portadora c(t)
     Tc = 1 / fc  # periodo [s]
     t_periodo = np.linspace(0, Tc, mpp)  # mpp: muestras por período
-    portadora = np.sin(2*np.pi*fc*t_periodo)
+    portadora1 = np.cos(2*np.pi*fc*t_periodo)
+    portadora2 = np.sin(2*np.pi*fc*t_periodo)
 
     # 3. Inicializar la señal modulada s(t)
     t_simulacion = np.linspace(0, N*Tc, N*mpp)
     senal_Tx = np.zeros(t_simulacion.shape)
-    moduladora = np.zeros(t_simulacion.shape)  # (opcional) señal de bits
+    # moduladora = np.zeros(t_simulacion.shape)  # (opcional) señal de bits
 
-    # 4. Asignar las formas de onda según los bits (BPSK)
-    # for i, bit in enumerate(bits):
-    #     if bit == 1:
-    #         senal_Tx[i*mpp: (i+1)*mpp] = portadora
-    #         moduladora[i*mpp: (i+1)*mpp] = 1
-    #     else:
-    #         senal_Tx[i*mpp: (i+1)*mpp] = portadora * -1
-    #         moduladora[i*mpp: (i+1)*mpp] = 0
+    # 4. Asignar las formas de onda según los bits (16-QAM)
+
+    for i in range(0, len(bits), 4):
+        # Se crea la señal según los valores del 16-QAM
+        b1 = bits[i]
+        b2 = bits[i+1]
+        b3 = bits[i+2]
+        b4 = bits[i+3]
+        senal_Tx[i*mpp: (i+1)*mpp] = (-1)**(1+b1) * 3**(1-b2) * portadora1\
+            + (-1)**(b3) * 3**(1-b4) * portadora2
 
     # 5. Calcular la potencia promedio de la señal modulada
     P_senal_Tx = (1 / (N*Tc)) * np.trapz(pow(senal_Tx, 2), t_simulacion)
 
-    return senal_Tx, P_senal_Tx, portadora, moduladora
+    return senal_Tx, P_senal_Tx, portadora1, portadora2
 
 
-def demodulador(senal_Rx, portadora, mpp):
+def demodulador(senal_Rx, portadora1, portadora2, mpp):
     '''Un método que simula un bloque demodulador
     de señales, bajo un esquema 16-QAM. El criterio
     de demodulación se basa en decodificación por
@@ -146,6 +149,8 @@ def demodulador(senal_Rx, portadora, mpp):
     :param mpp: Número de muestras por periodo
     :return: Los bits de la señal demodulada
     '''
+
+    portadora = portadora1 + portadora2
     # Cantidad de muestras en senal_Rx
     M = len(senal_Rx)
 
@@ -162,17 +167,17 @@ def demodulador(senal_Rx, portadora, mpp):
     # Es = np.sum(portadora * portadora)
 
     # Demodulación
-    # for i in range(N):
-    #     # Producto interno de dos funciones
-    #     producto = senal_Rx[i*mpp: (i+1)*mpp] * portadora
-    #     Ep = np.sum(producto)
-    #     senal_demodulada[i*mpp: (i+1)*mpp] = producto
+    for i in range(N):
+        # Producto interno de dos funciones
+        producto = senal_Rx[i*mpp: (i+1)*mpp] * portadora
+        Ep = np.sum(producto)
+        senal_demodulada[i*mpp: (i+1)*mpp] = producto
 
-    #     # Criterio de decisión por detección de energía
-    #     if Ep > 0:
-    #         bits_Rx[i] = 1
-    #     else:
-    #         bits_Rx[i] = 0
+        # Criterio de decisión por detección de energía
+        if Ep > 0:
+            bits_Rx[i] = 1
+        else:
+            bits_Rx[i] = 0
 
     return bits_Rx.astype(int), senal_demodulada
 
@@ -193,14 +198,14 @@ dimensiones = imagen_Tx.shape
 # 2. Codificar los pixeles de la imagen
 bits_Tx = rgb_a_bits(imagen_Tx)
 
-# 3. Modular la cadena de bits usando el esquema BPSK
-senal_Tx, Pm, portadora, moduladora = modulador(bits_Tx, fc, mpp)
+# 3. Modular la cadena de bits usando el esquema 16-QAM
+senal_Tx, Pm, portadora1, portadora2 = modulador(bits_Tx, fc, mpp)
 
 # 4. Se transmite la señal modulada, por un canal ruidoso
 senal_Rx = canal_ruidoso(senal_Tx, Pm, SNR)
 
 # 5. Se desmodula la señal recibida del canal
-bits_Rx, senal_demodulada = demodulador(senal_Rx, portadora, mpp)
+bits_Rx, senal_demodulada = demodulador(senal_Rx, portadora1, portadora2, mpp)
 
 # 6. Se visualiza la imagen recibida
 imagen_Rx = bits_a_rgb(bits_Rx, dimensiones)
@@ -228,13 +233,9 @@ Fig.tight_layout()
 plt.imshow(imagen_Rx)
 
 # Visualizar el cambio entre las señales
-fig, (ax1, ax2, ax3, ax4) = plt.subplots(nrows=4, sharex=True, figsize=(14, 7))
+fig, (ax2, ax3, ax4) = plt.subplots(nrows=3, sharex=True, figsize=(14, 7))
 
-# La onda cuadrada moduladora (bits de entrada)
-ax1.plot(moduladora[0:600], color='r', lw=2)
-ax1.set_ylabel('$b(t)$')
-
-# La señal modulada por BPSK
+# La señal modulada por 16-QAM
 ax2.plot(senal_Tx[0:600], color='g', lw=2)
 ax2.set_ylabel('$s(t)$')
 
