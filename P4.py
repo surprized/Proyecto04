@@ -121,13 +121,13 @@ def modulador(bits, fc, mpp):
     moduladora = np.zeros(t_simulacion.shape)  # (opcional) señal de bits
 
     # 4. Asignar las formas de onda según los bits (BPSK)
-    for i, bit in enumerate(bits):
-        if bit == 1:
-            senal_Tx[i*mpp: (i+1)*mpp] = portadora
-            moduladora[i*mpp: (i+1)*mpp] = 1
-        else:
-            senal_Tx[i*mpp: (i+1)*mpp] = portadora * -1
-            moduladora[i*mpp: (i+1)*mpp] = 0
+    # for i, bit in enumerate(bits):
+    #     if bit == 1:
+    #         senal_Tx[i*mpp: (i+1)*mpp] = portadora
+    #         moduladora[i*mpp: (i+1)*mpp] = 1
+    #     else:
+    #         senal_Tx[i*mpp: (i+1)*mpp] = portadora * -1
+    #         moduladora[i*mpp: (i+1)*mpp] = 0
 
     # 5. Calcular la potencia promedio de la señal modulada
     P_senal_Tx = (1 / (N*Tc)) * np.trapz(pow(senal_Tx, 2), t_simulacion)
@@ -162,17 +162,17 @@ def demodulador(senal_Rx, portadora, mpp):
     # Es = np.sum(portadora * portadora)
 
     # Demodulación
-    for i in range(N):
-        # Producto interno de dos funciones
-        producto = senal_Rx[i*mpp: (i+1)*mpp] * portadora
-        Ep = np.sum(producto)
-        senal_demodulada[i*mpp: (i+1)*mpp] = producto
+    # for i in range(N):
+    #     # Producto interno de dos funciones
+    #     producto = senal_Rx[i*mpp: (i+1)*mpp] * portadora
+    #     Ep = np.sum(producto)
+    #     senal_demodulada[i*mpp: (i+1)*mpp] = producto
 
-        # Criterio de decisión por detección de energía
-        if Ep > 0:
-            bits_Rx[i] = 1
-        else:
-            bits_Rx[i] = 0
+    #     # Criterio de decisión por detección de energía
+    #     if Ep > 0:
+    #         bits_Rx[i] = 1
+    #     else:
+    #         bits_Rx[i] = 0
 
     return bits_Rx.astype(int), senal_demodulada
 
