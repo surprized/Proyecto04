@@ -337,7 +337,7 @@ for i in range(0, 600, Np):
     E[i: i+Np] = np.mean(senal_Tx[i: i+Np])
 
 Fig4 = plt.figure(figsize=(9, 5))
-plt.plot(A, lw=2, label='Promedio temporal')
+plt.plot(A, lw=3, label='Promedio temporal')
 plt.plot(E, lw=2, label='Promedio estadístico')
 plt.ylabel('Amplitud')
 plt.xlabel('Tiempo / milisegundos')
