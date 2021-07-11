@@ -28,6 +28,11 @@ El demodulador analiza la amplitud (valor máximo por conjunto de muestras)
 y fase (prueba de energía), con el fin de extraer los cuatro bits por "pulso".
 
 La creación de las funciones e investigación sobre el funcionamiento del 
-16-QAM duró, en conjunto, aproximadamente 13 horas.
+16-QAM duró, sumadas, aproximadamente 13 horas.
 
-## 
+## Densidad espectral de potencia
+Directamente se utilizó el código proporcionado por el profesor. Se observa
+un pico en los 5000 \[Hz\], lo cual es de esperar pues a ésta frecuencia es
+que se transmite originalmente.
+
+## Estacionaridad y ergodicidad
