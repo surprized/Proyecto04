@@ -3,7 +3,7 @@
 Para los graciosos que vendrán a GitHub para copiar mi tarea,
 lean el archivo LICENSE.
 
-En otras palabras, si me se "inspiran" en mi tarea, deben incluir
+En otras palabras, si se "inspiran" en mi tarea, deben incluir
 la licencia y mi nombre en su trabajo. _Si no lo hacen les tiro
 mi EqUiPo dE aBoGaDos_.
 
