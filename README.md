@@ -27,3 +27,7 @@ Pulso = (-1)**(1+bits[i]) * 3**(1-bits[i+1]) * portadora1 + (-1)**(bits[i+2]) * 
 El demodulador analiza la amplitud (valor máximo por conjunto de muestras)
 y fase (prueba de energía), con el fin de extraer los cuatro bits por "pulso".
 
+La creación de las funciones e investigación sobre el funcionamiento del 
+16-QAM duró, en conjunto, aproximadamente 13 horas.
+
+## 

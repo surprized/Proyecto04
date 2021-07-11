@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: MIT
 
 from PIL import Image
+from scipy.fft import fft
 import numpy as np
 import matplotlib.pyplot as plt
 import time
@@ -200,7 +201,7 @@ def demodulador(senal_Rx, portadora1, portadora2, mpp):
             bits_Rx[j+2] = 1  # b3
 
         # Ahora se analiza la magnitud (partiendo del
-        # punto medio entre 1 y 3+1) 
+        # punto medio entre 1 y 3+1)
         if np.max(np.abs(producto1)) < 2.5:
             bits_Rx[j+1] = 1  # b2
         if np.max(np.abs(producto2)) < 2.5:
@@ -276,4 +277,33 @@ ax4.plot(senal_demodulada[0:600], color='m', lw=2)
 ax4.set_ylabel('$b^{\'}(t)$')
 ax4.set_xlabel('$t$ / milisegundos')
 fig.tight_layout()
+
+##########################################
+
+# Transformada de Fourier
+senal_f = fft(senal_Tx)
+
+# Muestras de la señal
+Nm = len(senal_Tx)
+
+# Número de símbolos (198 x 89 x 8 x 3)
+Ns = Nm // mpp
+
+# Tiempo del símbolo = periodo de la onda portadora
+Tc = 1 / fc
+
+# Tiempo entre muestras (período de muestreo)
+Tm = Tc / mpp
+
+# Tiempo de la simulación
+T = Ns * Tc
+
+# Espacio de frecuencias
+f = np.linspace(0.0, 1.0/(2.0*Tm), Nm//2)
+
+# Gráfica
+plt.figure(figsize=(9, 5))
+plt.plot(f, 2.0/Nm * np.power(np.abs(senal_f[0:Nm//2]), 2))
+plt.xlim(0, 20000)
+plt.grid()
 plt.show()
