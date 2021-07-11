@@ -59,3 +59,18 @@ que se transmite originalmente.
 ![Densidad de potencia](res/sxx.png)
 
 ## Estacionaridad y ergodicidad
+Si las funciones están bien hechas, se puede decir que el proceso es ergódico,
+pues el promedio temporal y el estadístico, en cada "periodo" se aproximan demasiado.
+Esto es sensato. pues se anticipa que dados muchos bits transmitidos, el promedio de
+todas las señales juntas, temporal y estadístico, se asemeje a cero; no obstante, la
+muestra elegida deberá de ser más grande.
+
+El proceso no se puede clasificar como estacionario, pues de un solo se
+ve, en la figura adjunta, que el promedio cambia con el tiempo. Esto tiene sentido
+al tratarse de una transmisión de bits, caso contrario, podría dar la idea que
+todos los datos son iguales, dado que hay modulación por **fase y amplitud**.
+
+Por ejemplo, el promedio temporal de las señales correspondientes a los bits 0011 y
+1111 claramente no será el mismo.
+
+![Promedios](res/avgs.png)

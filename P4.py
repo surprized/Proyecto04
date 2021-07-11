@@ -319,29 +319,28 @@ t_simulacion = np.linspace(0, N*Tc, N*mpp)
 
 np.linspace(0, N*Tc, N*mpp)
 
-# Primero el promedio estadístico
-
-Fig4 = plt.figure(figsize=(9, 5))
-E = np.full(shape=600, fill_value=np.mean(senal_Tx))
-plt.plot(E, lw=2, label='Promedio estadístico')
-plt.ylabel('Amplitud')
-plt.xlabel('Tiempo / milisegundos')
-
 # Ahora el promedio temporal POR PERIODO
 # Cantidad de periodos que caben en "600 [s]"
 # Para efectos prácticos, tómese que hay 2 periodos en
-# cada 20 milisegundos. Esto será aproximado, no obstante,
+# cada 40 milisegundos. Esto será aproximado, no obstante,
 # dada la gran cantidad de muestras en cada segundo, no
 # cambia el "big picture". Además, los tiempos no corres-
 # ponden exactamente, pero para obsercvaciones generales
-# está bien
-
+# está bien.
+# Al mismo tiempo, se calcula el promedio temporal para la
+# duración de tiempo seleccionada.
 A = np.zeros(600)
-Np = 20
+E = np.zeros(600)
+Np = 40
 for i in range(0, 600, Np):
-    A[i: i+Np] = 1/(2*Tc) * np.trapz(senal_Tx[i: i+Np], t_simulacion[i: i+Np])
+    A[i: i+Np] = 1/(Tc) * np.trapz(senal_Tx[i: i+Np], t_simulacion[i: i+Np])
+    E[i: i+Np] = np.mean(senal_Tx[i: i+Np])
 
+Fig4 = plt.figure(figsize=(9, 5))
 plt.plot(A, lw=2, label='Promedio temporal')
+plt.plot(E, lw=2, label='Promedio estadístico')
+plt.ylabel('Amplitud')
+plt.xlabel('Tiempo / milisegundos')
 plt.legend()
-plt.ylim([-0.005, 0.005])
+plt.ylim([-0.5, 0.5])
 plt.show()
