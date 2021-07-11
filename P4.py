@@ -200,7 +200,7 @@ def demodulador(senal_Rx, portadora1, portadora2, mpp):
             bits_Rx[j+2] = 1  # b3
 
         # Ahora se analiza la magnitud (partiendo del
-        # punto medio entre 1 y 3) 
+        # punto medio entre 1 y 3+1) 
         if np.max(np.abs(producto1)) < 2.5:
             bits_Rx[j+1] = 1  # b2
         if np.max(np.abs(producto2)) < 2.5:
