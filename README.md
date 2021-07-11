@@ -10,6 +10,8 @@ mi EqUiPo dE aBoGaDos_.
 Y ojo a garantías, no me pueden culpar si les va mal o hice alguna
 tontera en mi código.
 
+![gotcha](res/:p.png)
+
 ## Introducción
 Después de quebrarme la cabeza por 12 horas seguidas,
 logré resolver los bugs que tenía mi código.
