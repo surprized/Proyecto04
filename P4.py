@@ -195,7 +195,6 @@ def demodulador(senal_Rx, portadora1, portadora2, mpp):
         # Primero se detecta el signo de la amplitud
         if np.sum(producto1) >= 0:
             bits_Rx[j] = 1  # b1
-
         # Ojo que acá se invierte el signo
         if np.sum(producto2) < 0:
             bits_Rx[j+2] = 1  # b3
@@ -207,7 +206,7 @@ def demodulador(senal_Rx, portadora1, portadora2, mpp):
         if np.max(np.abs(producto2)) < 2.5:
             bits_Rx[j+3] = 1  # b4
         j += 4
-        # DEBUG: print(f"{amp1} {amp2} \n")
+        # DEBUG: print(f"{np.max(np.abs(producto1))} {np.abs(producto2)} \n")
     return bits_Rx.astype(int), senal_demodulada
 
 
@@ -229,7 +228,7 @@ bits_Tx = rgb_a_bits(imagen_Tx)
 
 # 3. Modular la cadena de bits usando el esquema 16-QAM
 senal_Tx, Pm, portadora1, portadora2 = modulador(bits_Tx, fc, mpp)
-
+print(f"Potencia de emisión: {Pm}")
 # 4. Se transmite la señal modulada, por un canal ruidoso
 senal_Rx = canal_ruidoso(senal_Tx, Pm, SNR)
 
@@ -314,6 +313,35 @@ plt.xlim([0, 15000])
 
 # Estacionaridad y ergodicidad
 
-# Primero se crea un arreglo con el tiempo
+# Tiempo de simulación
+N = len(bits_Tx)
+t_simulacion = np.linspace(0, N*Tc, N*mpp)
 
+np.linspace(0, N*Tc, N*mpp)
+
+# Primero el promedio estadístico
+
+Fig4 = plt.figure(figsize=(9, 5))
+E = np.full(shape=600, fill_value=np.mean(senal_Tx))
+plt.plot(E, lw=2, label='Promedio estadístico')
+plt.ylabel('Amplitud')
+plt.xlabel('Tiempo / milisegundos')
+
+# Ahora el promedio temporal POR PERIODO
+# Cantidad de periodos que caben en "600 [s]"
+# Para efectos prácticos, tómese que hay 2 periodos en
+# cada 20 milisegundos. Esto será aproximado, no obstante,
+# dada la gran cantidad de muestras en cada segundo, no
+# cambia el "big picture". Además, los tiempos no corres-
+# ponden exactamente, pero para obsercvaciones generales
+# está bien
+
+A = np.zeros(600)
+Np = 20
+for i in range(0, 600, Np):
+    A[i: i+Np] = 1/(2*Tc) * np.trapz(senal_Tx[i: i+Np], t_simulacion[i: i+Np])
+
+plt.plot(A, lw=2, label='Promedio temporal')
+plt.legend()
+plt.ylim([-0.005, 0.005])
 plt.show()

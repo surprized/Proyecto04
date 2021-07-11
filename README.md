@@ -7,8 +7,8 @@ En otras palabras, si me se "inspiran" en mi tarea, deben incluir
 la licencia y mi nombre en su trabajo. _Si no lo hacen les tiro
 mi EqUiPo dE aBoGaDos_.
 
-Y ojo a garantías, no me pueden culpar si les va mal o hice alguna
-tontera en mi código.
+Y ojo a las garantías, no me pueden culpar si les va mal o hice
+alguna tontera en mi código.
 
 ![gotcha](res/:p.png)
 
