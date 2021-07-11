@@ -1,5 +1,8 @@
 # Descripción de la solución
 
+Para los graciosos que vendrán a GitHub para copiar mi tarea,
+lean el archivo LICENSE.
+
 ## Introducción
 Después de quebrarme la cabeza por 12 horas seguidas,
 logré resolver los bugs que tenía mi código.
