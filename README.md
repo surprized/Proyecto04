@@ -7,6 +7,9 @@ En otras palabras, si me se "inspiran" en mi tarea, deben incluir
 la licencia y mi nombre en su trabajo. _Si no lo hacen les tiro
 mi EqUiPo dE aBoGaDos_.
 
+Y ojo a garantías, no me pueden culpar si les va mal o hice alguna
+tontera en mi código.
+
 ## Introducción
 Después de quebrarme la cabeza por 12 horas seguidas,
 logré resolver los bugs que tenía mi código.
