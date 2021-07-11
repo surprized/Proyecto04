@@ -30,9 +30,19 @@ y fase (prueba de energía), con el fin de extraer los cuatro bits por "pulso".
 La creación de las funciones e investigación sobre el funcionamiento del 
 16-QAM duró, sumadas, aproximadamente 13 horas.
 
+Para la SNR, se obtiene una transmisión limpia:
+
+![SNR = 120 \[dB\]](res/txrx.png)
+
+Las señales asociadas son las siguientes:
+
+![Señales transmitidas](res/signals.png)
+
 ## Densidad espectral de potencia
 Directamente se utilizó el código proporcionado por el profesor. Se observa
 un pico en los 5000 \[Hz\], lo cual es de esperar pues a ésta frecuencia es
 que se transmite originalmente.
+
+![Densidad de potencia](res/sxx.png)
 
 ## Estacionaridad y ergodicidad
