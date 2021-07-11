@@ -122,20 +122,26 @@ def modulador(bits, fc, mpp):
 
     # 4. Asignar las formas de onda según los bits (16-QAM)
     # Obsérvese: la pérdida de información si len(bits)%4!=0
+
+    # Se establece el contador de muestreos j
+    # Note que se almacena todo valor entre j y j+1
+    # Por eso j se incrementa de forma diferente a i
+    j = 0
     for i in range(0, N, 4):
-        ''' Se crea la señal según los valores del 16-QAM
+        ''' Se crea la señal según los valores del 16-QAM:
         b1 = bits[i]; b2 = bits[i+1];
         b3 = bits[i+2]; b4 = bits[i+3]
+        La siguiente fórmula se diseñó para compactar el código:
         senal_Tx[i*mpp: (i+1)*mpp] = (-1)**(1+b1) * 3**(1-b2) * portadora1 \
             + (-1)**(b3) * 3**(1-n4) * portadora2
         Con la tabla proporcionada se puede atestar que estos valores
-        coinciden con los del 16-QAM
+        coinciden con los del 16-QAM.
         '''
-        senal_Tx[i*mpp: (i+1)*mpp] = \
+        senal_Tx[j*mpp: (j+1)*mpp] = \
             (-1)**(1+bits[i]) * 3**(1-bits[i+1]) * portadora1 \
             + (-1)**(bits[i+2]) * 3**(1-bits[i+3]) * portadora2
-        # Ésta fórmula me la inventé para compactar el código
-
+        j += 2
+        # Aquí es donde se que se duplica el ancho de banda
     # 5. Calcular la potencia promedio de la señal modulada
     P_senal_Tx = 1 / (N*Tc) * np.trapz(pow(senal_Tx, 2), t_simulacion)
 
@@ -166,22 +172,43 @@ def demodulador(senal_Rx, portadora1, portadora2, mpp):
 
     # Pseudo-energía de un período de la portadora
     # Es = np.sum(portadora * portadora)
+    j = 0
 
     # Demodulación
     for i in range(N):
+
+        if j+4 > N:  # La cantidad datos que se puede recuperar no siempre
+            break   # coincide con lo que se puede muestrear
+
         # Producto interno de dos funciones
         producto1 = senal_Rx[i*mpp: (i+1)*mpp] * portadora1
         producto2 = senal_Rx[i*mpp: (i+1)*mpp] * portadora2
-        producto = producto1 + producto2
-        Ep = np.sum(producto)
-        senal_demodulada[i*mpp: (i+1)*mpp] = producto
+        senal_demodulada[i*mpp: (i+1)*mpp] = producto1 + producto2
 
-        # Criterio de decisión por detección de energía
-        if Ep > 0:
-            bits_Rx[i] = 1
-        else:
-            bits_Rx[i] = 0
+        # Criterio de decisión por detección de energía y magnitud
+        # SE ASUMIÓ QUE LAS SEÑALES ESTÁN EN FASE
+        # En la realidad hay que sincronizarlas
+        # Si el valor a poner es cero, no se toca pues ya es cero
+        # por defecto; esto es una pequeña optimización
 
+        # Primero se detecta el signo de la amplitud
+        if np.sum(producto1) >= 0:
+            bits_Rx[j] = 1  # b1
+
+        # Ojo que acá se invierte el signo
+        if np.sum(producto2) < 0:
+            bits_Rx[j+2] = 1  # b3
+
+        # Ahora se analiza la magnitud (partiendo del
+        # punto medio entre 1 y 3+1)
+        amp1, amp2 = np.max(np.abs(producto1)), np.max(np.abs(producto2))
+        if amp1 > 1 and amp2 > 1:  # HACK: Ignorar los ceros o sea, aprox.
+            if amp1 < 2.5:           # todo lo que sea menor a 1
+                bits_Rx[j+1] = 1  # b2
+            if amp2 < 2.5:
+                bits_Rx[j+3] = 1  # b4
+            j += 4
+        # DEBUG: print(f"{amp1} {amp2} \n")
     return bits_Rx.astype(int), senal_demodulada
 
 
@@ -189,7 +216,7 @@ def demodulador(senal_Rx, portadora1, portadora2, mpp):
 # Parámetros
 fc = 5000  # frecuencia de la portadora
 mpp = 20   # muestras por periodo de la portadora
-SNR = -5   # relación señal-a-ruido del canal
+SNR = 120   # relación señal-a-ruido del canal
 
 # Iniciar medición del tiempo de simulación
 inicio = time.time()
