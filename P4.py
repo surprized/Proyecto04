@@ -140,7 +140,7 @@ def modulador(bits, fc, mpp):
         senal_Tx[j*mpp: (j+1)*mpp] = \
             (-1)**(1+bits[i]) * 3**(1-bits[i+1]) * portadora1 \
             + (-1)**(bits[i+2]) * 3**(1-bits[i+3]) * portadora2
-        j += 2
+        j += 1
         # Aquí es donde se que se duplica el ancho de banda
     # 5. Calcular la potencia promedio de la señal modulada
     P_senal_Tx = 1 / (N*Tc) * np.trapz(pow(senal_Tx, 2), t_simulacion)
@@ -200,14 +200,12 @@ def demodulador(senal_Rx, portadora1, portadora2, mpp):
             bits_Rx[j+2] = 1  # b3
 
         # Ahora se analiza la magnitud (partiendo del
-        # punto medio entre 1 y 3+1)
-        amp1, amp2 = np.max(np.abs(producto1)), np.max(np.abs(producto2))
-        if amp1 > 1 and amp2 > 1:  # HACK: Ignorar los ceros o sea, aprox.
-            if amp1 < 2.5:           # todo lo que sea menor a 1
-                bits_Rx[j+1] = 1  # b2
-            if amp2 < 2.5:
-                bits_Rx[j+3] = 1  # b4
-            j += 4
+        # punto medio entre 1 y 3) 
+        if np.max(np.abs(producto1)) < 2.5:
+            bits_Rx[j+1] = 1  # b2
+        if np.max(np.abs(producto2)) < 2.5:
+            bits_Rx[j+3] = 1  # b4
+        j += 4
         # DEBUG: print(f"{amp1} {amp2} \n")
     return bits_Rx.astype(int), senal_demodulada
 
