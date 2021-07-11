@@ -215,7 +215,7 @@ def demodulador(senal_Rx, portadora1, portadora2, mpp):
 # Parámetros
 fc = 5000  # frecuencia de la portadora
 mpp = 20   # muestras por periodo de la portadora
-SNR = 120   # relación señal-a-ruido del canal
+SNR = 20   # relación señal-a-ruido del canal
 
 # Iniciar medición del tiempo de simulación
 inicio = time.time()
@@ -303,11 +303,17 @@ f = np.linspace(0.0, 1.0/(2.0*Tm), Nm//2)
 
 # Gráfica
 Fig3 = plt.figure(figsize=(9, 5))
-ax = Fig3.add_subplot(1, 1, 1)
-ax.plot(f, 2.0/Nm * np.power(np.abs(senal_f[0:Nm//2]), 2))
-ax.grid()
-ax.set_title('Densidad espectral de potencia')
-ax.set_ylabel(r'$S_{xx}(\omega)a$')
-ax.set_xlabel('Frecuencia [Hz]')
-ax.set_xlim([0, 15000])
+plt.plot(f, 2.0/Nm * np.power(np.abs(senal_f[0:Nm//2]), 2))
+plt.grid()
+plt.title('Densidad espectral de potencia')
+plt.ylabel(r'$S_{xx}(\omega)$')
+plt.xlabel('Frecuencia [Hz]')
+plt.xlim([0, 15000])
+
+##########################################
+
+# Estacionaridad y ergodicidad
+
+# Primero se crea un arreglo con el tiempo
+
 plt.show()

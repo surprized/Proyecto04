@@ -9,7 +9,7 @@ el cuidado de que para la segunda portadora la prueba
 se invierte. Además se debe de agregar una prueba de amplitud, 
 para la cual se eligió 2.5 como punto medio.
 
-Al ajustar la SNR a 120 se obtiene cero errores de transmisión, pero
+Al ajustar la SNR a 20 se obtiene (usualmente) cero errores de transmisión, pero
 si se baja hasta ser negativa, la cifra de errores aumenta a ritmo
 acelerado - esto tiene sentido pues al tratarse de modulación
 por amplitud (además de fase), la señal pierde inmunidad al ruido.
@@ -30,9 +30,10 @@ y fase (prueba de energía), con el fin de extraer los cuatro bits por "pulso".
 La creación de las funciones e investigación sobre el funcionamiento del 
 16-QAM duró, sumadas, aproximadamente 13 horas.
 
-Para la SNR, se obtiene una transmisión limpia:
+Para la SNR de 20, se obtiene una transmisión limpia, aunque a veces aparece
+uno que otro error, estos ni se perciben:
 
-![SNR = 120 \[dB\]](res/txrx.png)
+![SNR = 20 \[dB\]](res/txrx.png)
 
 Las señales asociadas son las siguientes:
 
