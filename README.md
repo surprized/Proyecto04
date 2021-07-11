@@ -10,7 +10,7 @@ mi EqUiPo dE aBoGaDos_.
 Y ojo a garantías, no me pueden culpar si les va mal o hice alguna
 tontera en mi código.
 
-![gotcha](res/:p.png)
+![gotcha](res/:p.png =100x)
 
 ## Introducción
 Después de quebrarme la cabeza por 12 horas seguidas,
@@ -45,17 +45,17 @@ La creación de las funciones e investigación sobre el funcionamiento del
 Para la SNR de 20, se obtiene una transmisión limpia, aunque a veces aparece
 uno que otro error, estos ni se perciben:
 
-![SNR = 20 \[dB\]](res/txrx.png)
+->![SNR = 20 \[dB\]](res/txrx.png =700x)<-
 
 Las señales asociadas son las siguientes:
 
-![Señales transmitidas](res/signals.png)
+->![Señales transmitidas](res/signals.png =700x)<-
 
 ## Densidad espectral de potencia
 Directamente se utilizó el código proporcionado por el profesor. Se observa
 un pico en los 5000 \[Hz\], lo cual es de esperar pues a ésta frecuencia es
 que se transmite originalmente.
 
-![Densidad de potencia](res/sxx.png)
+->![Densidad de potencia](res/sxx.png =500x)<-
 
 ## Estacionaridad y ergodicidad
