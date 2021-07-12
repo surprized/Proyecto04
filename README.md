@@ -44,6 +44,10 @@ Las señales asociadas son las siguientes:
 
 ![Señales transmitidas](res/signals.png)
 
+Con un SNR de 5 se observa la siguiente imagen, con _31030 errores, para un BER de 0.0734_:
+
+![SNR = 5 \[dB\]](res/txrx5.png)
+
 ## Densidad espectral de potencia
 Directamente se utilizó el código proporcionado por el profesor. Se observa
 un pico en los 5000 \[Hz\], lo cual es de esperar pues a ésta frecuencia es
