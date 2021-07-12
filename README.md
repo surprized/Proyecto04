@@ -1,11 +1,10 @@
 # Resultados del Proyecto 4
+Andrés Barrantes Silman - B81020 - Grupo 2
 
 ## Observaciones legales
 Ver el archivo LICENSE :)
 
 # Descripción de la solución
-Andrés Barrantes Silman - B81020 - Grupo 2
-
 ## Introducción
 Después de quebrarme la cabeza por 12 horas seguidas,
 logré resolver los bugs que tenía mi código.
