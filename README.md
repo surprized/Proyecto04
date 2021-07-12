@@ -1,16 +1,10 @@
+# Resultados del Proyecto 4
+
+## Observaciones legales
+Ver el archivo LICENSE :)
+
 # Descripción de la solución
-
-Para los graciosos que vendrán a GitHub para copiar mi tarea,
-lean el archivo LICENSE.
-
-En otras palabras, si se "inspiran" en mi tarea, deben incluir
-la licencia y mi nombre en su trabajo. _Si no lo hacen les tiro
-mi EqUiPo dE aBoGaDos_.
-
-Y ojo a las garantías, no me pueden culpar si les va mal o hice
-alguna tontera en mi código.
-
-![gotcha](res/:p.png)
+Andrés Barrantes Silman - B81020 - Grupo 2
 
 ## Introducción
 Después de quebrarme la cabeza por 12 horas seguidas,
