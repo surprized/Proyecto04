@@ -134,7 +134,7 @@ def modulador(bits, fc, mpp):
         b3 = bits[i+2]; b4 = bits[i+3]
         La siguiente fórmula se diseñó para compactar el código:
         senal_Tx[i*mpp: (i+1)*mpp] = (-1)**(1+b1) * 3**(1-b2) * portadora1 \
-            + (-1)**(b3) * 3**(1-n4) * portadora2
+            + (-1)**(b3) * 3**(1-b4) * portadora2
         Con la tabla proporcionada se puede atestar que estos valores
         coinciden con los del 16-QAM.
         '''
